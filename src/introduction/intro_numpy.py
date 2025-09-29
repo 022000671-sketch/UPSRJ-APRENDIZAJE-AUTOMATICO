@@ -28,7 +28,7 @@ def ten_zeros_array(n: int) -> np.ndarray:
     - np.ndarray
         Arreglo de ceros de longitud n.
     """
-    arg = None
+    arg  = np.zeros(5)
     return arg
 
 # Ejercicio 2
@@ -51,6 +51,7 @@ def floats_array(start: int, stop: int) -> np.ndarray:
         Arreglo de números flotantes.
     """
     arg = None
+
     return arg
 
 # Ejercicio 3 
