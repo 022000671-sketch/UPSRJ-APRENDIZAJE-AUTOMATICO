@@ -29,8 +29,8 @@ def csv_registers(file: str) -> tuple[int, pd.DataFrame]:
     - tuple: (n_registros, DataFrame)
         Número de registros y contenido como DataFrame.
     """
-    data = None
-    registers = None
+    data = pd.read_csv(file)
+    registers = data.shape[0]
     return (registers, data)
 
 # Ejercicio 2
@@ -50,8 +50,8 @@ def json_registers(file: str) -> tuple[int, pd.DataFrame]:
     - tuple: (n_registros, DataFrame)
         Número de registros y contenido como DataFrame.
     """
-    data = None
-    registers = None
+    data = pd.read_json(file)
+    registers = data.shape[0]
     return (registers, data)
 
 # Ejercicio 3
@@ -71,8 +71,11 @@ def yaml_registers(file: str) -> tuple[int, pd.DataFrame]:
     - tuple: (n_registros, DataFrame)
         Número de registros y contenido como DataFrame.
     """
-    data = None
-    registers = None
+    with open(file, 'r', encoding='utf-8') as f:
+        # yaml.safe_load_all para múltiples documentos YAML
+        yaml_documents = list(file.safe_load_all(f))
+    data = pd.DataFrame(file)
+    registers = data.shape[0]
     return (registers, data)
 
 # Ejercicio 4
@@ -92,7 +95,7 @@ def get_head(df: pd.DataFrame, n: int) -> pd.DataFrame:
     - pd.DataFrame
         Subconjunto con los primeros n registros.
     """
-    df_head = None
+    df_head = df.head(n)
     return df_head
 
 # Ejercicio 5
@@ -115,7 +118,8 @@ def get_above(df: pd.DataFrame, col: str, n: int) -> pd.DataFrame:
     - pd.DataFrame
         Registros que cumplen la condición col > n.
     """
-    above = None
+    
+    above = df[df[col] > n]
     return above
 
 # Ejercicio 6
@@ -139,7 +143,7 @@ def group_and_average(df: pd.DataFrame, group: str, avg: str) -> pd.Series:
     - pd.Series
         Promedio por grupo.
     """
-    grouped = None
+    grouped = df.groupby(group)[avg].mean()
     return grouped
 
 # Ejercicio 7
@@ -161,7 +165,7 @@ def count_in_col(df: pd.DataFrame, item: str, col: str) -> int:
     - int
         Número de ocurrencias del elemento.
     """
-    count = None
+    count = (df[col] == item).sum()
     return count 
 
 # Ejercicio 8
@@ -180,7 +184,7 @@ def export_data(df: pd.DataFrame, file: str) -> None:
     Retorna:
     - None
     """
-    pass
+    df.to_csv(file, index=False)
 
 # Ejercicio 9
 # TODO: Crea una función "compare_dfs" que compare dos DataFrame de entrada y devuelva un True (bool) si son iguales
@@ -199,6 +203,8 @@ def compare_dfs(df1: pd.DataFrame, df2: pd.DataFrame) -> bool:
     - bool
         True si son iguales, False si no lo son.
     """
-    equal = None
+    df1=pd.DataFrame
+    df2=pd.DataFrame
+    equal = df1 == df1
     return equal
 
