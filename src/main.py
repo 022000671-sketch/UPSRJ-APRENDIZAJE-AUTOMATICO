@@ -53,6 +53,8 @@ def introduction():
         # Exportar resultados
         OUTPUT = os.path.join(os.path.dirname(__file__), "outputs", "aprobados.csv")
         try:
+            if not os.path.exists(os.path.dirname(OUTPUT)):
+                os.mkdir(os.path.dirname(OUTPUT))
             intro.export_data(aprobados, OUTPUT)
             print(f"- Datos exportados a: {OUTPUT}")
         except:
@@ -230,5 +232,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-
-    sys.exit(not result1.wasSuccessful() and not result2.wasSuccessful() )

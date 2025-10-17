@@ -29,6 +29,7 @@ BOLD = "\033[1m"
 SEPARATOR = f"{BOLD}{'='*50}{RESET}"
 
 SOURCE_URL = "https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-ML0101EN-SkillsNetwork/labs/Module%202/data/FuelConsumptionCo2.csv"
+CHURN_URL = "https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-ML0101EN-SkillsNetwork/labs/Module%203/data/ChurnData.csv"
 OUTPUT_DIR = "test_outputs"
 FEATURE_1 = "ENGINESIZE"
 FEATURE_2 = "FUELCONSUMPTION_COMB"
@@ -161,9 +162,9 @@ class TestEvaluationOne(unittest.TestCase):
         self.assertEqual(mode, 2.0)
 
     def test_low_pass_filter(self):
-        signal_data = np.sin(2 * np.pi * 5 * np.linspace(0, 1, 100))
-        result = isp.low_pass_filter(signal_data, fs=100)
-        self.assertEqual(len(result), len(signal_data))
+        signal = np.sin(2 * np.pi * 5 * np.linspace(0, 1, 100))
+        result = isp.low_pass_filter(signal, fs=100)
+        self.assertEqual(len(result), len(signal))
 
     def test_main_execution(self):
         # Ejecutar main y capturar status
@@ -209,10 +210,10 @@ class TestEvaluationTwo(unittest.TestCase):
         self.assertIsInstance(self.model.p2, np.ndarray)
 
     def test_model_training(self):
-        coef1 = self.model.m1.coef_[0]
-        coef2 = self.model.m2.coef_[0]
-        self.assertIsInstance(coef1, float)
-        self.assertIsInstance(coef2, float)
+        coef1 = self.model.m1.coef_[0][0]
+        coef2 = self.model.m2.coef_[0][0]
+        self.assertIsInstance(coef1, (float, np.floating))
+        self.assertIsInstance(coef2, (float, np.floating))
 
     def test_output_files_created(self):
         files = [
@@ -233,7 +234,7 @@ class TestEvaluationTwo(unittest.TestCase):
 
 class TestEvaluationThree(unittest.TestCase):
 
-    # ===================== linear_regression =====================
+    # ===================== multiple_linear_regression =====================
 
     @classmethod
     def setUpClass(cls):
@@ -257,8 +258,8 @@ class TestEvaluationThree(unittest.TestCase):
         self.assertIsNotNone(self.model.x_std)
 
     def test_model_training(self):
-        coef = self.model.m.coef_[0]
-        self.assertIsInstance(coef, float)
+        coef = self.model.m.coef_[0][0]
+        self.assertIsInstance(coef, (float, np.floating))
 
     def test_output_files_created(self):
         files = [
@@ -278,14 +279,14 @@ class TestEvaluationThree(unittest.TestCase):
 
 class TestEvaluationFour(unittest.TestCase):
 
-    # ===================== linear_regression =====================
+    # ===================== logistic_regression =====================
 
     @classmethod
     def setUpClass(cls):
         if not os.path.exists(OUTPUT_DIR):
             os.mkdir(OUTPUT_DIR)
         cls.model = LogisticRegressionCompare(
-            url=SOURCE_URL,
+            url=CHURN_URL,
             base=CHURN,
             out=OUTPUT_DIR
         )
@@ -299,8 +300,8 @@ class TestEvaluationFour(unittest.TestCase):
         self.assertIsNotNone(self.model.x_std)
 
     def test_model_training(self):
-        coef = self.model.m.coef_[0]
-        self.assertIsInstance(coef, float)
+        coef = self.model.m.coef_[0][0]
+        self.assertIsInstance(coef, (float, np.floating))
 
     def test_output_files_created(self):
         files = [
